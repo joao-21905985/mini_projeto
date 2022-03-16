@@ -10,17 +10,20 @@ import '../widgets/DropdownWidget.dart';
 import '../widgets/checkBoxWidget.dart';
 
 class FormScreen extends StatefulWidget {
+  general_bloc bloc;
+
+  FormScreen(this.bloc, {Key? key}) : super(key: key);
+
   @override
   _FormScreenState createState() => _FormScreenState();
 }
 
 class _FormScreenState extends State<FormScreen> {
-  
   late double weight;
-  bool recentMeal3h =false;
-  late int feelAval =1;
+  bool recentMeal3h = false;
+  late int feelAval = 1;
   late String Obs;
-  
+
   final colorstheme = Color(0xff0d0432);
   final formKey = GlobalKey<FormState>(); //key for form
   String name = "";
@@ -63,11 +66,13 @@ class _FormScreenState extends State<FormScreen> {
                 ),
                 TextFormField(
                   keyboardType: TextInputType.number,
-                  onSaved: (String? value) {weight = double.parse(value ?? ""); },
+                  onSaved: (String? value) {
+                    weight = double.parse(value ?? "");
+                  },
                   decoration: InputDecoration(
                       labelText: "Insira o seu peso em Kg", hintText: "Ex: 45"),
                   validator: (value) {
-                    if (value!.isEmpty || double.tryParse(value) == null ){
+                    if (value!.isEmpty || double.tryParse(value) == null) {
                       return "Insira um peso válido";
                     } else {
                       return null;
@@ -78,21 +83,23 @@ class _FormScreenState extends State<FormScreen> {
                   height: height * 0.05,
                 ),
                 Row(children: [
-                  Text(
+                  const Text(
                     "Como se sente Hoje? (1 a 5)",
-                    style: TextStyle(fontSize: 16, color: Color.fromARGB(255, 102, 102, 102)),
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Color.fromARGB(255, 102, 102, 102)),
                   ),
                   Container(
                     padding: EdgeInsets.only(left: 10),
                     child: DropdownButton(
                       value: feelAval,
                       items: dropdownList
-                          .map((e) =>
-                          DropdownMenuItem(value: e, child: Text(e.toString())))
+                          .map((e) => DropdownMenuItem(
+                              value: e, child: Text(e.toString())))
                           .toList(),
                       onChanged: (int? val) {
                         setState(() {
-                          if (val != null) feelAval = val ;
+                          if (val != null) feelAval = val;
                           print(feelAval);
                         });
                       },
@@ -104,10 +111,11 @@ class _FormScreenState extends State<FormScreen> {
                   height: height * 0.05,
                 ),
                 Row(children: [
-                  Text(
+                  const Text(
                     "Comeu nas últimas 3 horas ?",
                     style: TextStyle(
-                        fontSize: 16, color: Color.fromARGB(255, 100, 100, 100)),
+                        fontSize: 16,
+                        color: Color.fromARGB(255, 100, 100, 100)),
                   ),
                   Container(
                     child: Checkbox(
@@ -129,8 +137,10 @@ class _FormScreenState extends State<FormScreen> {
                 TextFormField(
                   keyboardType: TextInputType.multiline,
                   minLines: 1,
-                  onSaved: (String? value) {Obs = value ?? ""; },
-                  decoration: InputDecoration(
+                  onSaved: (String? value) {
+                    Obs = value ?? "";
+                  },
+                  decoration: const InputDecoration(
                     labelText: "Observações",
                     hintText: "Min: 100 caracteres | Max: 200 caracteres",
                   ),
@@ -149,17 +159,27 @@ class _FormScreenState extends State<FormScreen> {
                   alignment: Alignment.center,
                   child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
-                          primary: Colors.grey,
+                          primary: Colors.green,
                           minimumSize: const Size.fromHeight(50)),
                       label: Text("Submeter"),
                       icon: Icon(Icons.subdirectory_arrow_right),
                       onPressed: () {
-                        if(formKey.currentState != null && formKey.currentState!.validate()){
+                        if (formKey.currentState != null &&
+                            formKey.currentState!.validate()) {
                           formKey.currentState!.save();
-                          Registos novoRegisto = Registos(weight,recentMeal3h,feelAval, Obs: Obs);
-                          //general_bloc.listItems.add(novoRegisto);
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => List_Screen()));
-
+                          Registos novoRegisto = Registos(
+                              weight, recentMeal3h, feelAval,
+                              Obs: Obs);
+                          widget.bloc.listItems.add(novoRegisto);
+                          print(widget.bloc.listItems.toString());
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const AlertDialog(
+                                  content: Text(
+                                      "O seu registo foi submetido com sucesso!!!"),
+                                );
+                              });
                         }
                       }),
                 )

@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mini_projeto/models/list_item.dart';
 
+import '../models/registos.dart';
+
 class ListItemWidget extends StatelessWidget {
-  final ListItem item;
+  final Registos item;
   final Animation<double> animation;
   final VoidCallback? onClicked;
 
@@ -15,15 +17,17 @@ class ListItemWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => SlideTransition(
+  Widget build(BuildContext context) =>
+      SlideTransition(
         position: Tween<Offset>(
-          begin: Offset(-1,0),
+          begin: Offset(-1, 0),
           end: Offset.zero,
         ).animate(CurvedAnimation(parent: animation, curve: Curves.ease)),
         child: buildItem(),
       );
 
-  buildItem() => Container(
+  buildItem() =>
+      Container(
         margin: EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
@@ -42,12 +46,10 @@ class ListItemWidget extends StatelessWidget {
                 primary: Colors.black26,
                 textStyle: TextStyle(color: Colors.white)),
           ),
-          title: Text("Peso: " +
-              item.weight +
-              "  |  Feeling: " +
-              item.feeling +
-              "  |  Date: " +
-              item.date),
+          title: Text("Peso: ${item.weight}" +
+              "  |  Feeling: ${item.feelAval}" +
+              "  |  Date:  ${item.getDate()}"
+          ),
           trailing: ElevatedButton.icon(
             onPressed: onClicked,
             icon: Icon(

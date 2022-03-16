@@ -69,12 +69,12 @@ class CardGridWidget extends StatelessWidget {
                           child: Column(
                             children: [
                               Text(
-                                '  Healthy',
+                                '  Placeholder',
                                 style:
                                     TextStyle(fontSize: 18, color: colorwhite),
                               ),
                               Text(
-                                '  Cancer',
+                                '  Placeholder',
                                 style:
                                     TextStyle(fontSize: 18, color: colorwhite),
                               ),

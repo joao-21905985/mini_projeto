@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mini_projeto/blocs/general_bloc.dart';
 
 class CardWidget extends StatelessWidget {
-  final content;
 
-  CardWidget({this.content});
+  final general_bloc bloc;
+
+  CardWidget({required this.bloc});
 
   @override
   Widget build(BuildContext context) {
@@ -15,18 +17,24 @@ class CardWidget extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Align(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.center,
             child: Container(
                 margin: EdgeInsets.all(18.0),
                 height: MediaQuery.of(context).size.height / 5,
-                child: Column(children: [
-                  Row(children: [
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                  Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
                     const Text("Primeiro Registo - ",
                         style: TextStyle(
                           fontSize: 25,
                           color: Colors.black,
-                        )),
-                    Text(content,
+                        )
+                    ),
+                    Text(bloc.listItems[bloc.listItems.length -1 ].getDate(),
+
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 25,
@@ -39,7 +47,7 @@ class CardWidget extends StatelessWidget {
                           fontSize: 25,
                           color: Colors.black,
                         )),
-                    Text(content,
+                    Text(bloc.listItems[0].getDate(),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 25,
